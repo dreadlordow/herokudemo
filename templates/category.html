@@ -1,0 +1,84 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% block product_styles %}
+    <link rel="stylesheet" href="{% static 'css/category.css' %}">
+{% endblock %}
+{% block content %}
+    {% if products %}
+    {% if 'q' in request.GET %}
+        {% if products.count < 0 %}
+            <h5 class="heading display-3" style="margin-bottom: 2rem;">No results matching your search</h5>
+        {% else %}
+
+            <h5 class="heading display-3" style="margin-bottom: 2rem;"> {{ products.count }} products found matching
+                your search</h5>
+        {% endif %}
+    {% else %}
+        <h5 class="heading display-3" style="margin-bottom: 2rem;"> {{ products.count }} products found category '{{ category }}'</h5>
+    {% endif %}
+        <div style="display: flex;flex-wrap:wrap; flex-direction: row">
+            <form class="d-flex" method="get" action="{% url 'search in category' category %}"
+                  style="width:30%; margin-left: 30%; margin-bottom: 3rem; margin-top:2rem;">
+                <input name="q" class="form-control me-2" type="search" placeholder="Search in categories"
+                       aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+
+            {% if 'q' in request.GET %}
+                <form class="sort-by" method="get" action="{% url 'search in category' category %}">
+                <input type="hidden" name="q" value="{{ query }}">
+
+            {% else %}
+                <form class="sort-by" method="get" action="{% url 'category_view' category %}">
+            {% endif %}
+            {{ sort_form }}
+            <button>Filter</button>
+            </form>
+        </div>
+
+        <div class="parent">
+            {% for product in page_obj %}
+                <div class="card child">
+                    <a href="{% url 'product' product.pk  product.product_name %}">
+                        {% with product.productpicture_set.all|first as image %}
+                            <img src="{{ image.images.url }}" class="card-img-top" alt="{{ product.product_name }}"
+                                 style="height: 300px">
+                        {% endwith %}
+                    </a>
+                    <div class="card-body">
+                        <a href="{% url 'product' product.pk product.product_name %}">
+                            <h5 class="card-title">{{ product.product_name }}</h5>
+                        </a>
+                        <h6 class="card-title">{{ product.price }}lv</h6>
+                        {#                        <p class="card-text">{{ product.description }}.</p>#}
+                        {% include 'partials/add_to_cart.html' %}
+
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    {% else %}
+        <h1 class="heading display-1">No products found</h1>
+    {% endif %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a class="link" href="?page=1{% if 'q' in request.GET %}&q={{ query }}{% endif %}&order={{ order }}">First</a>
+                <a class="link" href="?page=
+                        {{ page_obj.previous_page_number }}{% if 'q' in request.GET %}&q={{ query }}{% endif %}&order={{ order }}">
+                    Previous</a>
+            {% endif %}
+            <span class="current page-item">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+            {% if page_obj.has_next %}
+                <a class="link" href="?page=
+                        {{ page_obj.next_page_number }}{% if 'q' in request.GET %}&q={{ query }}{% endif %}&order={{ order }}">Next</a>
+                <a class="link" href="?page=
+                        {{ page_obj.paginator.num_pages }}{% if 'q' in request.GET %}&q={{ query }}{% endif %}&order={{ order }}">Last</a>
+            {% endif %}
+        </span>
+
+    </div>
+{% endblock %}

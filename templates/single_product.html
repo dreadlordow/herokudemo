@@ -1,0 +1,101 @@
+{% extends 'shared/base.html' %}
+{% load crispy_forms_tags %}
+{% block product_styles %}
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+{% endblock %}
+{% block content %}
+
+    <div class="d-flex" style="height:100%">
+        <div class="d-inline p-3" style="width:60%; max-height: 50%">
+        <div class="w3-content w3-display-container">
+            {% with product.productpicture_set.all as images %}
+                {% for image in images %}
+            <img src="{{ image.images.url }}"
+                 class="mySlides" style="margin-left:1in;margin-right:1in; max-width: 80%; max-height: 80%; height: 10cm; width: 12cm;">
+                {% endfor %}
+                    {% endwith %}
+          <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+            <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
+        </div>
+
+        </div>
+        <div class="d-inline p-2" style="width:35%">
+            <div class="d-flex">
+                <h5><u>Product:</u> {{ product.product_name }}</h5>
+            </div>
+            <div class="d-flex">
+                <h5><u>Price:</u> {{ product.price }}</h5>
+
+            </div>
+            <p class="mt-2 d-flex" style=" height:65%;overflow: hidden;text-overflow:ellipsis; ">
+                Description: {{ product.description }}</p>
+            <div>
+                {% include 'partials/add_to_cart.html' %}
+            </div>
+            <br>
+            {% if user.is_staff or user.pk == product.owner_id %}
+                <div class="d-flex">
+                    <div class="d-block">
+                        <form method="get" action="{% url 'edit_item' product.pk %}">
+                            {% csrf_token %}
+                            <button class="btn btn-primary div-item">Edit Product</button>
+                        </form>
+                    </div>
+                    <div class="d-block">
+
+                        <form method="get" action="{% url 'delete item' product.pk %}">
+                            {% csrf_token %}
+                            <button class="btn btn-danger div-item delete-btn"
+                                    name="delete" value="{{ user.pk }}" style="margin-left:1rem;">Delete
+                                product
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+            <pmo>Product viewed : {{ product.views }} times</pmo>
+            <a href=""><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+        </div>
+        <div class="d-inline w-30">
+            <h3>Listed by</h3>
+            <h4>
+                <a href="{% url 'profile' owner.username %}" style="text-decoration: none">{{ owner.username }}</a>
+            </h4>
+
+        </div>
+    </div>
+    <div class="d-block" style="background-color: #f1e3e3;margin-top:3rem; padding:2%;">
+        {% for comment in product_comments %}
+            <h5>{{ comment.user }}:</h5>
+            <e>{{ comment.text }}</e>
+            <hr>
+        {% endfor %}
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'product' product.pk product.product_name %}">
+                {% csrf_token %}
+                {{ comment_form }}
+                <button>Submit</button>
+            </form>
+        {% endif %}
+    </div>
+
+    <script>
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
+
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length}
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  x[slideIndex-1].style.display = "block";
+}
+</script>
+{% endblock %}

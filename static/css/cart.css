@@ -1,0 +1,30 @@
+.cart-container{
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    transform: translateY(-80px);
+}
+
+.name{
+
+}
+.name-div{
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+
+.denied{
+    color: red ;
+    text-align: center;
+    margin-top:5%;
+}
+
+.total{
+    transform: translateX(60%);
+}
+
+.empty-cart{
+    text-align: center;
+}

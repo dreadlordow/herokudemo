@@ -1,0 +1,61 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+{% block product_styles %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% if user.pk == cart_pk %}
+        {% if len == 0 %}
+            <h1 class="display-1 empty-cart">Your cart is empty</h1>
+        {% else %}
+            <div class="total">
+                <div class="total-head">
+                    <h1>Your total is: {{ total }}lv.</h1>
+
+                    <form method="get" action="{% url 'checkout' %}">
+                        <button type="submit" class="btn btn-warning">Continue to checkout</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="cart-container">
+                {% for product in products %}
+
+                    <div class="card" style="width: 80%; margin-bottom: 1.2rem">
+                        <a href="{% url 'product' product.id product.product_name %} ">
+                            {% with product.productpicture_set.all|first as image %}
+                                <img src="{{ image.images.url }}"
+                                     class="card-img-top" alt="{{ product.product_name }}"
+                                     style="max-width: 100%; max-height: 80%;">
+                            {% endwith %}
+                        </a>
+                        <div class="card-body">
+                            <a href="{% url 'product' product.id product.product_name %} ">
+
+                                <h5 class="card-title">{{ product.product_name }}</h5>
+                            </a>
+                            <h6 class="card-title">{{ product.price }}lv</h6>
+                            <p class="card-text">{{ product.description }}.</p>
+                            <form method="get" action="{% url 'remove_from_cart' product.pk %}">
+                                {% csrf_token %}
+                                <div>
+                                    <button class="btn btn-danger" type="submit" name="delete" value="{{ cart_pk }}">
+                                        Delete from cart
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% else %}
+
+
+        <h1 class="denied">Access denied</h1>
+    {% endif %}
+
+{% endblock %}

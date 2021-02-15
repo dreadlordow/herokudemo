@@ -1,0 +1,18 @@
+<div class="card item" >
+    <a href="{% url 'product' product.pk product.product_name %}">
+        {% with product.productpicture_set.all|first as image %}
+            <img src="{{ image.images.url }}" alt="{{ product.product_name }}">
+        {% endwith %}
+    </a>
+    <div class="card-body">
+        <h5 class="card-title">
+            <a style="color:black;" href="{% url 'product' product.pk product.product_name %}">{{ product.product_name }}</a>
+        </h5>
+
+        <h6 class="card-title">{{ product.price }}lv</h6>
+        <div style="margin-bottom: 1%; margin-top: 1.2rem">
+            {% include 'partials/add_to_cart.html' %}
+        </div>
+    </div>
+
+</div>

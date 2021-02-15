@@ -1,0 +1,6 @@
+{% if user.is_authenticated %}
+    <form method="post" action="{% url 'add_to_cart' user.pk %}">
+        {% csrf_token %}
+        <button class="btn btn-warning div-item add-to-cart" name="add" value="{{ product.pk }}">Add to cart</button>
+    </form>
+{% endif %}

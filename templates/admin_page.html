@@ -1,0 +1,30 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% block product_styles %}
+    <link rel="stylesheet" href="{% static 'css/admin_page.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="parent">
+        <div class="item">
+        <h3 style="text-align: center;">{{ users.count }} registered users</h3>
+        <hr style="border: 1px solid black">
+        {% for user in users %}
+            <p class="users">{{ user.username }}</p>
+        {% endfor %}
+        </div>
+        <div class="item">
+          <h3>Total products: {{ products.count }}</h3>
+          <hr>
+          {% for product in products %}
+          <p>{{ product.product_name }} - {{ product.price }}lv</p>
+          {% endfor %}
+        </div>
+        <div class="item">
+        <h3>{{ orders.count }} completed orders</h3>
+        <hr>
+        {% for order in orders %}
+        <p>id: {{ order.id }} | Made by: {{ order.user.username }} - Cost: {{ order.total_cost }} - {{ order.total_products }} items</p>
+        {% endfor %}
+</div>
+    </div>
+{% endblock %}

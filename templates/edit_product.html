@@ -1,0 +1,27 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block product_styles %}
+    <link rel="stylesheet" href="{% static 'css/products.css' %}"> {% endblock %}
+
+{% block content %}
+    {% if product.owner_id != id %}
+        <h1 style="text-align: center; color:red;">Access denied</h1>
+    {% else %}
+        <h1>Edit product</h1>
+        <div class="create-product">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                {{ formset.management_form|crispy }}
+                {% for form in formset %}
+                    <p>{{ form }}</p>
+                {% endfor %}
+                <div class="add-item">
+                    <button type="submit" name="profile" value="{{ user.pk }}" class="btn btn-success">Edit item
+                    </button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

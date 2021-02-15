@@ -1,0 +1,28 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+{% block product_styles %}
+    <link rel="stylesheet" href="{% static 'css/products.css' %}"> {% endblock %}
+
+{% block content %}
+    <div class="main">
+        <div class="img-container">
+            <img src="{{ profile_picture_exists.profile_picture.url }}" class="pfp">
+            {% if user.id == owner.id %}
+                <div class="middle">
+                    <a href="{% url 'change pfp' owner.username owner.id %}">Change picture</a>
+                </div>
+            {% endif %}
+                <p class="username">{{ owner.username }}</p>
+                <button class="edit btn btn-primary">Edit profile</button>
+
+        </div>
+    </div>
+    <hr style="transform: translateY(20px)">
+    <div class="container">
+        {% for product in products %}
+            {% include 'partials/products.html' %}
+        {% endfor %}
+    </div>
+
+{% endblock %}

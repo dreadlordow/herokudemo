@@ -1,0 +1,26 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% block product_styles %} <link rel="stylesheet" href="{% static 'css/products.css' %}"> {% endblock %}
+{% block content %}
+    {% if object_list.count > 0 %}
+    <h1 style="text-align: center">{{ object_list.count }} Results containing {{ query }}</h1>
+
+    <form method="get" action="{% url 'search' %}">
+        {{ sort_form }}
+        <input type="hidden" name="q" value="{{ query }}">
+        <input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
+        <input type="hidden" name="max_price" value="{{ request.GET.max_price }}">
+        <input type="hidden" name="city" value="{{ request.GET.city }}">
+    <button>Filter</button>
+    </form>
+    <div class="container">
+        {% for product in object_list %}
+
+            {% include 'partials/products.html' %}
+
+        {% endfor %}
+    </div>
+    {% else %}
+    <h1 style="text-align: center">No products matching your search</h1>
+{% endif %}
+{% endblock %}

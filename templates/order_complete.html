@@ -1,0 +1,21 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% block product_styles %}
+    <link rel="stylesheet" href="{% static 'css/order_complete.css' %}">
+{% endblock %}
+{% block content %}
+    <h3 class="order">Your order is complete.</h3>
+    <h4 class="order">Total paid: {{ cost }}lv</h4>
+    <div class="container">
+        {% for product in products %}
+            <div class="item" style="margin-bottom:1rem;">
+                <img src="{{ product.image_url }}">
+                <p>{{ product.product_name }}</p>
+                <p>{{ product.price }}lv</p>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="center">
+        <a class='btn btn-warning' href="{% url 'index' %}">Go back shopping</a>
+    </div>
+{% endblock %}

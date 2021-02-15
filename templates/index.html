@@ -1,0 +1,56 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% block product_styles %}
+    <link rel="stylesheet" href="{% static 'css/products.css' %}">
+{% endblock %}
+{% block content %}
+
+    <div class="search-box">
+        <form method="get" action="{% url 'search' %}">
+            <input name="q" class="form-control me-2 search-bar" type="search" placeholder="Search" aria-label="Search"
+                   style="display: inline!important;">
+            <input name="city" class="form-control me-2 city" placeholder="city" style="display: inline">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+            <br>
+            <div style="display: block; margin-top:1rem;">
+                <input type="number" name="min_price" id="id_min_price" placeholder="Min price"> -
+                <input type="number" name="max_price" id="id_max_price" placeholder="Max price">
+            </div>
+        </form>
+    </div>
+
+    <div class="sort-by">
+        <form method="get" action="{% url 'index' %}">
+            <input type="hidden" name="page" value="{{ page_obj.number }}">
+            {{ sort_form }}
+            <button>Filter</button>
+        </form>
+    </div>
+    <div class="container">
+
+        {% for product in page_obj %}
+            {% include 'partials/products.html' %}
+        {% endfor %}
+
+    </div>
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a class="link" href="?page=1{% if order %}&order={{ order }}{% endif %}">&laquo; first</a>
+            <a class="link" href="?page={{ page_obj.previous_page_number }}&order={{ order }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a class="link"
+               href="?page={{ page_obj.next_page_number }}{% if order %}&order={{ order }}{% endif %}">next</a>
+            <a class="link" href="?page={{ page_obj.paginator.num_pages }}&order={{ order }}">last &raquo;</a>
+        {% endif %}
+    </span>
+    </div>
+
+
+{% endblock %}

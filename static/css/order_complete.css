@@ -1,0 +1,30 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-right: 10%;
+    height: 20%;
+    align-items: center;
+
+}
+
+.item {
+    order: 4;
+    border-radius: 1px;
+    border: solid 1px #eeeeee;
+    width: 30%;
+
+}
+img{
+    height: 200px;
+    max-width: 100%;
+}
+
+.order{
+    text-align: center;
+}
+
+.center{
+    margin-top: 10px;
+    text-align: center;
+}

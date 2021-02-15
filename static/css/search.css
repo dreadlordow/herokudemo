@@ -1,0 +1,11 @@
+.cart-container {
+    padding-left: 10px;
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    margin-left: 1.2rem;
+}
+
+h1{
+    margin-left:1.2rem;
+}

@@ -1,0 +1,17 @@
+.parent {
+    width: 100%;
+    float: left;
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: row;
+
+}
+
+.item {
+    width: 33%;
+    border: 0.5px solid black;
+    border-radius: 0.5px;
+    border-right: 1px solid black;
+    order: 3;
+    text-align: center;
+}
