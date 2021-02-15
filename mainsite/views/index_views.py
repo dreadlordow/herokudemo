@@ -50,11 +50,11 @@ class IndexView(ListView):
         context['order'] = self.order
 
         page_number = self.request.GET.get('page')
-        paginator = Paginator(self.products, 8)
-
-        context['paginator'] = paginator
-        context['page_obj'] = paginator.get_page(page_number)
-        context['is_paginated'] = True
+        if self.products:
+            paginator = Paginator(self.products, 8)
+            context['paginator'] = paginator
+            context['page_obj'] = paginator.get_page(page_number)
+            context['is_paginated'] = True
 
         return context
 
