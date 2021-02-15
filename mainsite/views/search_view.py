@@ -57,18 +57,21 @@ class SearchView(ListView):
         except MultiValueDictKeyError:
             object_list = Product.objects.all()
 
-        if query:
-            object_list = Product.objects.filter(
-                product_name__icontains=query) | Product.objects.filter(description__icontains=query)
+        if object_list:
+            if query:
+                object_list = Product.objects.filter(
+                    product_name__icontains=query) | Product.objects.filter(description__icontains=query)
 
-        if city:
-            object_list = object_list.filter(city__icontains=city)
+            if city:
+                object_list = object_list.filter(city__icontains=city)
 
-        if min_price:
-            object_list = object_list.filter(price__gte=min_price)
+            if min_price:
+                object_list = object_list.filter(price__gte=min_price)
 
-        if max_price:
-            object_list = object_list.filter(price__lte=max_price)
+            if max_price:
+                object_list = object_list.filter(price__lte=max_price)
 
-        return object_list.order_by(order)
+            return object_list.order_by(order)
+        
+        return object_list
 
