@@ -47,6 +47,8 @@ class SearchView(ListView):
         min_price = self.request.GET.get('min_price')
         max_price = self.request.GET.get('max_price')
         order = extract_filter_value(self.request.GET)
+        if not order:
+            order = '-date_added'
 
         try:
             products = self.request.GET.get('products')
